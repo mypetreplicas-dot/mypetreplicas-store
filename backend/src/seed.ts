@@ -5,7 +5,7 @@
  */
 import 'dotenv/config';
 
-const ADMIN_API = `http://localhost:${process.env.PORT || 3000}/admin-api`;
+const ADMIN_API = process.env.VENDURE_API_URL || `http://localhost:${process.env.PORT || 3000}/admin-api`;
 
 async function adminQuery(query: string, variables: any = {}, token?: string) {
     const headers: Record<string, string> = { 'Content-Type': 'application/json' };
