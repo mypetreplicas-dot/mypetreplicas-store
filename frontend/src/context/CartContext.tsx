@@ -260,11 +260,19 @@ export function CartProvider({ children }: { children: ReactNode }) {
       customFields?: { specialInstructions?: string; petPhotos?: string[] },
     ) => {
       setIsLoading(true);
-      const variables = {
+      const variables: Record<string, any> = {
         productVariantId: variantId,
         quantity,
-        customFields: customFields || undefined,
       };
+
+      if (customFields) {
+        variables.customFields = {
+          specialInstructions: customFields.specialInstructions,
+        };
+        if (customFields.petPhotos) {
+          variables.customFields.petPhotosIds = customFields.petPhotos;
+        }
+      }
       try {
         let data = await vendureMutation<Record<string, unknown>>(ADD_TO_ORDER_MUTATION, variables);
         let result = extractOrder(data);

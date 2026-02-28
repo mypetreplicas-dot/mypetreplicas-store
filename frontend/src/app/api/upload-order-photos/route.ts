@@ -172,7 +172,7 @@ export async function POST(request: NextRequest) {
           variables: {
             orderLineId: pendingLine.id,
             customFields: {
-              petPhotos: updatedPhotos,
+              petPhotosIds: updatedPhotos,
               specialInstructions: cleanedInstructions || null,
             },
           },
