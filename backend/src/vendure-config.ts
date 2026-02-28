@@ -15,6 +15,8 @@ import { PetPhotoUploadPlugin } from './plugins/pet-photo-upload.plugin';
 import { multiPetDiscountAction } from './promotions/multi-pet-discount';
 import 'dotenv/config';
 import path from 'path';
+import https from 'https';
+import { NodeHttpHandler } from '@smithy/node-http-handler';
 
 const IS_DEV = process.env.APP_ENV === 'dev';
 const serverPort = +process.env.PORT || 3000;
@@ -114,6 +116,9 @@ export const config: VendureConfig = {
                         nativeS3Configuration: {
                             endpoint: process.env.R2_ENDPOINT,
                             region: 'auto',
+                            requestHandler: new NodeHttpHandler({
+                                httpsAgent: new https.Agent({ rejectUnauthorized: false })
+                            }),
                         },
                     }),
                 }),
