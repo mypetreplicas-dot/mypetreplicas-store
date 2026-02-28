@@ -5,6 +5,7 @@ import {
     DefaultSearchPlugin,
     LanguageCode,
     VendureConfig,
+    Asset,
 } from '@vendure/core';
 import { defaultEmailHandlers, EmailPlugin, FileBasedTemplateLoader } from '@vendure/email-plugin';
 import { AssetServerPlugin, configureS3AssetStorage } from '@vendure/asset-server-plugin';
@@ -88,8 +89,10 @@ export const config: VendureConfig = {
             },
             {
                 name: 'petPhotos',
-                type: 'text',
-                label: [{ languageCode: LanguageCode.en, value: 'Pet Photo Asset IDs' }],
+                type: 'relation',
+                entity: Asset,
+                list: true,
+                label: [{ languageCode: LanguageCode.en, value: 'Pet Photos' }],
                 nullable: true,
                 public: true,
             },

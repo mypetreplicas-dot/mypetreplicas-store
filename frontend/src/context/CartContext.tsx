@@ -5,7 +5,7 @@ import { createContext, useContext, useState, useCallback, useEffect, ReactNode 
 // ── Types ──
 interface OrderLineCustomFields {
   specialInstructions?: string | null;
-  petPhotos?: string | null;
+  petPhotos?: string[] | null;
 }
 
 interface OrderLine {
@@ -42,7 +42,7 @@ interface CartContextType {
   addToCart: (
     variantId: string,
     quantity?: number,
-    customFields?: { specialInstructions?: string; petPhotos?: string },
+    customFields?: { specialInstructions?: string; petPhotos?: string[] },
   ) => Promise<void>;
   updateQuantity: (lineId: string, quantity: number) => Promise<void>;
   removeFromCart: (lineId: string) => Promise<void>;
@@ -254,7 +254,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     async (
       variantId: string,
       quantity = 1,
-      customFields?: { specialInstructions?: string; petPhotos?: string },
+      customFields?: { specialInstructions?: string; petPhotos?: string[] },
     ) => {
       setIsLoading(true);
       const variables = {

@@ -180,6 +180,7 @@ export default function ProductConfigurator({ product }: ProductConfiguratorProp
             // Process each pet and add to cart
             for (let i = 0; i < pets.length; i++) {
                 const pet = pets[i];
+                let assetIds: string[] = [];
                 const variant = getVariantForPet(pet);
 
                 if (!variant) {
@@ -188,13 +189,13 @@ export default function ProductConfigurator({ product }: ProductConfiguratorProp
                     return;
                 }
 
-                let assetIds = '';
+
 
                 if (!pet.skipImages && pet.uploadedFiles.length > 0) {
                     setUploadProgress(`Uploading photos for Pet ${i + 1}...`);
                     const token = getVendureToken();
                     const assets = await uploadPetPhotos(pet.uploadedFiles, token);
-                    assetIds = assets.map((a) => a.id).join(',');
+                    assetIds = assets.map((a) => a.id);
                 }
 
                 setUploadProgress(`Adding Pet ${i + 1} to cart...`);
@@ -208,7 +209,7 @@ export default function ProductConfigurator({ product }: ProductConfiguratorProp
 
                 await addToCart(variant.id, 1, {
                     specialInstructions: instructionParts.length > 0 ? instructionParts.join(' ') : undefined,
-                    petPhotos: assetIds || undefined,
+                    petPhotos: assetIds.length > 0 ? assetIds : undefined,
                 });
             }
 
@@ -281,8 +282,8 @@ export default function ProductConfigurator({ product }: ProductConfiguratorProp
                                                 key={option.id}
                                                 onClick={() => updatePetOption(pet.id, group.code, option.code)}
                                                 className={`px-5 py-3 rounded-lg text-sm font-medium transition-all ${isSelected
-                                                        ? 'bg-terra-600 text-white shadow-[0_0_16px_rgba(212,112,62,0.3)]'
-                                                        : 'bg-neutral-800 text-neutral-300 hover:bg-neutral-700'
+                                                    ? 'bg-terra-600 text-white shadow-[0_0_16px_rgba(212,112,62,0.3)]'
+                                                    : 'bg-neutral-800 text-neutral-300 hover:bg-neutral-700'
                                                     }`}
                                             >
                                                 {option.name}
@@ -323,8 +324,8 @@ export default function ProductConfigurator({ product }: ProductConfiguratorProp
                                 className="flex items-center gap-3 mb-5 group cursor-pointer"
                             >
                                 <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${pet.skipImages
-                                        ? 'bg-terra-600 border-terra-600'
-                                        : 'border-neutral-700 bg-neutral-800/50'
+                                    ? 'bg-terra-600 border-terra-600'
+                                    : 'border-neutral-700 bg-neutral-800/50'
                                     }`}>
                                     {pet.skipImages && (
                                         <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
@@ -360,8 +361,8 @@ export default function ProductConfigurator({ product }: ProductConfiguratorProp
                                                             type="button"
                                                             onClick={() => updatePetField(pet.id, 'preferredPhotoIndex', index)}
                                                             className={`absolute top-2 right-2 z-10 transition-all ${isPreferred
-                                                                    ? 'text-terra-400 scale-110 drop-shadow-[0_0_8px_rgba(212,112,62,0.8)]'
-                                                                    : 'text-white/40 hover:text-terra-400'
+                                                                ? 'text-terra-400 scale-110 drop-shadow-[0_0_8px_rgba(212,112,62,0.8)]'
+                                                                : 'text-white/40 hover:text-terra-400'
                                                                 }`}
                                                         >
                                                             <svg className="w-6 h-6" fill={isPreferred ? "currentColor" : "none"} stroke="currentColor" strokeWidth={isPreferred ? 0 : 2} viewBox="0 0 24 24">
@@ -495,8 +496,8 @@ export default function ProductConfigurator({ product }: ProductConfiguratorProp
                     onClick={handleAddToCart}
                     disabled={isAdding}
                     className={`w-full py-4 px-8 rounded-full text-lg font-semibold transition-all ${added
-                            ? 'bg-terra-700 text-white'
-                            : 'bg-terra-600 hover:bg-terra-500 text-white shadow-[0_0_32px_rgba(212,112,62,0.3)] hover:shadow-[0_0_48px_rgba(212,112,62,0.5)]'
+                        ? 'bg-terra-700 text-white'
+                        : 'bg-terra-600 hover:bg-terra-500 text-white shadow-[0_0_32px_rgba(212,112,62,0.3)] hover:shadow-[0_0_48px_rgba(212,112,62,0.5)]'
                         } disabled:opacity-70 disabled:cursor-not-allowed`}
                 >
                     {isAdding ? (
