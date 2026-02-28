@@ -280,11 +280,10 @@ export default function ProductConfigurator({ product }: ProductConfiguratorProp
                                             <button
                                                 key={option.id}
                                                 onClick={() => updatePetOption(pet.id, group.code, option.code)}
-                                                className={`px-5 py-3 rounded-lg text-sm font-medium transition-all ${
-                                                    isSelected
+                                                className={`px-5 py-3 rounded-lg text-sm font-medium transition-all ${isSelected
                                                         ? 'bg-terra-600 text-white shadow-[0_0_16px_rgba(212,112,62,0.3)]'
                                                         : 'bg-neutral-800 text-neutral-300 hover:bg-neutral-700'
-                                                }`}
+                                                    }`}
                                             >
                                                 {option.name}
                                             </button>
@@ -302,7 +301,7 @@ export default function ProductConfigurator({ product }: ProductConfiguratorProp
                                 </label>
                                 <div className="text-xs text-terra-400 flex items-center gap-1 font-medium">
                                     <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
                                     </svg>
                                     Select Preferred Pose
                                 </div>
@@ -323,11 +322,10 @@ export default function ProductConfigurator({ product }: ProductConfiguratorProp
                                 }}
                                 className="flex items-center gap-3 mb-5 group cursor-pointer"
                             >
-                                <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${
-                                    pet.skipImages
+                                <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${pet.skipImages
                                         ? 'bg-terra-600 border-terra-600'
                                         : 'border-neutral-700 bg-neutral-800/50'
-                                }`}>
+                                    }`}>
                                     {pet.skipImages && (
                                         <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
@@ -361,11 +359,10 @@ export default function ProductConfigurator({ product }: ProductConfiguratorProp
                                                         <button
                                                             type="button"
                                                             onClick={() => updatePetField(pet.id, 'preferredPhotoIndex', index)}
-                                                            className={`absolute top-2 right-2 z-10 transition-all ${
-                                                                isPreferred
+                                                            className={`absolute top-2 right-2 z-10 transition-all ${isPreferred
                                                                     ? 'text-terra-400 scale-110 drop-shadow-[0_0_8px_rgba(212,112,62,0.8)]'
                                                                     : 'text-white/40 hover:text-terra-400'
-                                                            }`}
+                                                                }`}
                                                         >
                                                             <svg className="w-6 h-6" fill={isPreferred ? "currentColor" : "none"} stroke="currentColor" strokeWidth={isPreferred ? 0 : 2} viewBox="0 0 24 24">
                                                                 <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
@@ -471,7 +468,8 @@ export default function ProductConfigurator({ product }: ProductConfiguratorProp
                         </div>
 
                         {/* Add Another Pet button (only after first pet's instructions) */}
-                        {petIndex === pets.length - 1 && (
+                        {/* 
+                        petIndex === pets.length - 1 && (
                             <div className="pt-4">
                                 <button
                                     onClick={handleAddPet}
@@ -485,7 +483,8 @@ export default function ProductConfigurator({ product }: ProductConfiguratorProp
                                     </span>
                                 </button>
                             </div>
-                        )}
+                        )
+                        */}
                     </div>
                 );
             })}
@@ -495,11 +494,10 @@ export default function ProductConfigurator({ product }: ProductConfiguratorProp
                 <button
                     onClick={handleAddToCart}
                     disabled={isAdding}
-                    className={`w-full py-4 px-8 rounded-full text-lg font-semibold transition-all ${
-                        added
+                    className={`w-full py-4 px-8 rounded-full text-lg font-semibold transition-all ${added
                             ? 'bg-terra-700 text-white'
                             : 'bg-terra-600 hover:bg-terra-500 text-white shadow-[0_0_32px_rgba(212,112,62,0.3)] hover:shadow-[0_0_48px_rgba(212,112,62,0.5)]'
-                    } disabled:opacity-70 disabled:cursor-not-allowed`}
+                        } disabled:opacity-70 disabled:cursor-not-allowed`}
                 >
                     {isAdding ? (
                         <span className="flex items-center justify-center gap-2">
@@ -517,7 +515,7 @@ export default function ProductConfigurator({ product }: ProductConfiguratorProp
                             Added to Cart
                         </span>
                     ) : (
-                        `Add ${pets.length > 1 ? `${pets.length} Pets` : 'to Cart'} →`
+                        `Add to Cart →`
                     )}
                 </button>
             </div>
@@ -545,7 +543,8 @@ export default function ProductConfigurator({ product }: ProductConfiguratorProp
             </div>
 
             {/* Subtle pricing info at bottom */}
-            {pets.length > 1 && (
+            {/* 
+            pets.length > 1 && (
                 <div className="mt-6 pt-6 border-t border-neutral-800/50">
                     <p className="text-xs text-neutral-600 mb-3">
                         <span className="font-medium text-neutral-500">Multi-pet pricing:</span> Each additional pet receives a progressive discount
@@ -557,7 +556,8 @@ export default function ProductConfigurator({ product }: ProductConfiguratorProp
                         <div>Pet 4+: 20% off</div>
                     </div>
                 </div>
-            )}
+            )
+            */}
         </div>
     );
 }
