@@ -5,7 +5,7 @@ import { createContext, useContext, useState, useCallback, useEffect, ReactNode 
 // ── Types ──
 interface OrderLineCustomFields {
   specialInstructions?: string | null;
-  petPhotos?: string[] | null;
+  petPhotos?: { id: string; preview: string }[] | null;
 }
 
 interface OrderLine {
@@ -128,7 +128,10 @@ const ORDER_FRAGMENT = `
         linePriceWithTax
         customFields {
             specialInstructions
-            petPhotos
+            petPhotos {
+              id
+              preview
+            }
         }
         productVariant {
             id

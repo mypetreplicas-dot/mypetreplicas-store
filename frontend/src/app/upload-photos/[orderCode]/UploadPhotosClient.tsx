@@ -12,7 +12,7 @@ interface OrderLine {
   };
   customFields: {
     specialInstructions: string | null;
-    petPhotos: string | null;
+    petPhotos: Array<{ id: string }> | null;
   } | null;
 }
 
@@ -177,11 +177,10 @@ export default function UploadPhotosClient({
             }}
             onDragLeave={() => setIsDragging(false)}
             onDrop={handleDrop}
-            className={`relative rounded-xl p-12 text-center transition-all cursor-pointer ${
-              isDragging
+            className={`relative rounded-xl p-12 text-center transition-all cursor-pointer ${isDragging
                 ? 'bg-terra-900/30 ring-2 ring-terra-500/50'
                 : 'bg-neutral-800/50 hover:bg-neutral-800 border-2 border-dashed border-neutral-700'
-            }`}
+              }`}
             onClick={() => document.getElementById('photo-upload-input')?.click()}
           >
             <input

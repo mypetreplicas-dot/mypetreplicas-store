@@ -25,7 +25,9 @@ const GET_ORDER_QUERY = `
         }
         customFields {
           specialInstructions
-          petPhotos
+          petPhotos {
+            id
+          }
         }
       }
     }
@@ -50,7 +52,7 @@ interface OrderResponse {
       };
       customFields: {
         specialInstructions: string | null;
-        petPhotos: string | null;
+        petPhotos: Array<{ id: string }> | null;
       } | null;
     }>;
   } | null;
@@ -112,7 +114,8 @@ export default async function UploadPhotosPage({ params }: PageProps) {
   const hasPendingPhotos = order.lines.some(
     (line) =>
       line.customFields?.specialInstructions?.includes('[Photos pending]') ||
-      !line.customFields?.petPhotos
+      !line.customFields?.petPhotos ||
+      line.customFields.petPhotos.length === 0
   );
 
   if (!hasPendingPhotos) {

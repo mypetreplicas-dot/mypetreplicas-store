@@ -20,7 +20,7 @@ interface OrderResponse {
       id: string;
       customFields: {
         specialInstructions: string | null;
-        petPhotos: string | null;
+        petPhotos: Array<{ id: string }> | null;
       } | null;
     }>;
   } | null;
@@ -73,7 +73,9 @@ export async function POST(request: NextRequest) {
                 id
                 customFields {
                   specialInstructions
-                  petPhotos
+                  petPhotos {
+                    id
+                  }
                 }
               }
             }
@@ -135,18 +137,19 @@ export async function POST(request: NextRequest) {
       throw new Error('Failed to upload assets');
     }
 
-    const assetIds = assets.map((a) => a.id).join(',');
+    const assetIds = assets.map((a) => a.id);
 
     // Step 4: Update the first line item that's pending photos
     const pendingLine = order.lines.find(
       (line) =>
         line.customFields?.specialInstructions?.includes('[Photos pending]') ||
-        !line.customFields?.petPhotos
+        !line.customFields?.petPhotos ||
+        line.customFields.petPhotos.length === 0
     );
 
     if (pendingLine) {
-      const existingPhotos = pendingLine.customFields?.petPhotos || '';
-      const updatedPhotos = existingPhotos ? `${existingPhotos},${assetIds}` : assetIds;
+      const existingPhotos = pendingLine.customFields?.petPhotos?.map(p => p.id) || [];
+      const updatedPhotos = [...existingPhotos, ...assetIds];
 
       // Remove [Photos pending] from special instructions
       const specialInstructions = pendingLine.customFields?.specialInstructions || '';
