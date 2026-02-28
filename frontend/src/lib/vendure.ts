@@ -10,7 +10,7 @@ export async function queryVendure<T>(query: string, variables?: Record<string, 
       query,
       variables,
     }),
-    cache: 'no-store'
+    next: { revalidate: 0 } // Bypass Next.js cache
   });
 
   const json = await res.json();
@@ -251,7 +251,7 @@ export function getEnabledVariants(variants: ProductVariant[]): ProductVariant[]
     // Stage 2 (fallback): Filter by valid price
     // Disabled variants typically have null/undefined/0 prices
     return typeof variant.price === 'number' &&
-           !isNaN(variant.price) &&
-           variant.price > 0;
+      !isNaN(variant.price) &&
+      variant.price > 0;
   });
 }
