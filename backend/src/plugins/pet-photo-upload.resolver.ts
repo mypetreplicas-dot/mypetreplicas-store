@@ -18,19 +18,21 @@ export class PetPhotoUploadResolver {
         @Ctx() ctx: RequestContext,
         @Args() args: { files: any[] },
     ) {
-        const assets = [];
-        for (const filePromise of args.files) {
-            // AssetService.create() does `await input.file` internally,
-            // so we pass the raw upload promise as `file`.
-            const asset = await this.assetService.create(ctx, {
-                file: filePromise,
-            });
-            if ('id' in asset) {
-                assets.push(asset);
-            } else {
+        const uploadPromises = args.files.map(async (filePromise) => {
+            try {
+                const asset = await this.assetService.create(ctx, { file: filePromise });
+                if ('id' in asset) {
+                    return asset;
+                }
                 console.error('Failed to create asset:', asset);
+                return null;
+            } catch (error) {
+                console.error('Error uploading asset:', error);
+                return null;
             }
-        }
-        return assets;
+        });
+
+        const results = await Promise.all(uploadPromises);
+        return results.filter(asset => asset !== null);
     }
 }

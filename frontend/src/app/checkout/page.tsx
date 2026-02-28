@@ -211,9 +211,13 @@ export default function CheckoutPage() {
             `, { state: 'ArrangingPayment' });
 
             if (transitionResult.transitionOrderToState?.transitionError) {
-                setError(transitionResult.transitionOrderToState.message);
-                setIsSubmitting(false);
-                return;
+                const msg = transitionResult.transitionOrderToState.message || '';
+                // Suppress redundant state transitions (e.g., user hits 'Continue' twice)
+                if (!msg.includes('from "ArrangingPayment" to "ArrangingPayment"')) {
+                    setError(msg);
+                    setIsSubmitting(false);
+                    return;
+                }
             }
 
             // 5. Create Stripe PaymentIntent
