@@ -40,11 +40,11 @@ export const config: VendureConfig = {
     authOptions: {
         tokenMethod: ['bearer', 'cookie'],
         superadminCredentials: {
-            identifier: process.env.SUPERADMIN_USERNAME,
-            password: process.env.SUPERADMIN_PASSWORD,
+            identifier: process.env.SUPERADMIN_USERNAME || 'superadmin',
+            password: process.env.SUPERADMIN_PASSWORD || 'superadmin',
         },
         cookieOptions: {
-            secret: process.env.COOKIE_SECRET,
+            secret: process.env.COOKIE_SECRET || 'fallback-cookie-secret-12345',
         },
     },
     dbConnectionOptions: process.env.DATABASE_URL
