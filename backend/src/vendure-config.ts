@@ -51,7 +51,10 @@ export const config: VendureConfig = {
         ? {
             type: 'postgres',
             url: process.env.DATABASE_URL,
-            synchronize: true,
+            synchronize: true, // Auto-create schema on boot
+            ssl: {
+                rejectUnauthorized: false,
+            },
             migrations: [path.join(__dirname, './migrations/*.+(js|ts)')],
             logging: false,
         }
