@@ -1,0 +1,129 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-playfair);
+
+  /* ── Rich Terracotta Brand Color ── */
+  --color-terra-50: #fdf5f0;
+  --color-terra-100: #fae8dc;
+  --color-terra-200: #f4cdb5;
+  --color-terra-300: #ecab86;
+  --color-terra-400: #e08a5c;
+  --color-terra-500: #d4703e;
+  --color-terra-600: #c45a2e;
+  --color-terra-700: #a34726;
+  --color-terra-800: #843b24;
+  --color-terra-900: #6c3321;
+  --color-terra-950: #3a1910;
+
+  /* ── Premium Dark Greys (10 shades) ── */
+  --color-neutral-50: #fafafa;
+  --color-neutral-100: #f4f4f5;
+  --color-neutral-200: #e4e4e7;
+  --color-neutral-300: #d4d4d8;
+  --color-neutral-400: #a1a1aa;
+  --color-neutral-500: #71717a;
+  --color-neutral-600: #52525b;
+  --color-neutral-700: #3f3f46;
+  --color-neutral-800: #27272a;
+  --color-neutral-900: #18181b;
+  --color-neutral-950: #09090b;
+
+  /* ── Semantic ── */
+  --color-dark-main: #0c0c0e;
+  --color-dark-card: #131316;
+  --color-dark-elevated: #1a1a1e;
+
+  /* ── Animations ── */
+  --animate-fade-in-up: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-float: float 6s ease-in-out infinite;
+
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes float {
+
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+}
+
+:root {
+  --background: var(--color-dark-main);
+  --foreground: var(--color-neutral-100);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-dark-main);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-neutral-700);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-neutral-600);
+}
+
+/* ── Typography Refinements ── */
+/* Improve readability of uppercase text */
+.uppercase {
+  letter-spacing: 0.05em;
+}
+
+/* Display font gets tighter line-height for dramatic headlines */
+.font-display {
+  font-family: 'Merriweather', serif;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+/* Body text gets comfortable line-height */
+body {
+  line-height: 1.6;
+}
+
+/* ── Subtle text gradient ── */
+.text-gradient {
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-image: linear-gradient(135deg, var(--color-neutral-100), var(--color-neutral-400));
+}
+
+.text-gradient-terra {
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-image: linear-gradient(135deg, var(--color-terra-300), var(--color-terra-500));
+}

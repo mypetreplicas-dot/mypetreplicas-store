@@ -1,0 +1,183 @@
+{{> header title="Order Confirmation" }}
+
+<mj-raw>
+    <style type="text/css">
+    .callout-large > div {
+        text-align: center !important;
+        color: #f4f4f5 !important;
+        font-size: 13px !important;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 0;
+    }
+    .callout-small > div {
+        text-align: center !important;
+        color: #d4d4d8 !important;
+        font-size: 15px !important;
+        padding: 0;
+    }
+    ul.address {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        color: #a1a1aa;
+    }
+    ul.address li {
+        padding: 2px 0;
+    }
+    tr.order-row td {
+        border-bottom: 1px solid #27272a;
+        color: #d4d4d8;
+        padding: 12px 6px;
+    }
+    tr.order-row td:last-child {
+        text-align: right;
+    }
+    tr.total-row td {
+        color: #f4f4f5;
+        font-weight: bold;
+        font-size: 16px;
+    }
+    </style>
+</mj-raw>
+
+<!-- Greeting -->
+<mj-section background-color="#0c0c0e" padding="30px 40px 10px">
+    <mj-column>
+        <mj-text color="#f4f4f5" font-size="22px" font-weight="700" font-family="'Outfit', 'Helvetica Neue', Arial, sans-serif">
+            Thank you for your order!
+        </mj-text>
+        <mj-text color="#a1a1aa" font-size="15px" padding-top="4px">
+            Hi {{ order.customer.firstName }}, we've received your order and are getting started on your custom pet replica.
+        </mj-text>
+    </mj-column>
+</mj-section>
+
+<!-- Order Info Cards -->
+<mj-section background-color="#131316" padding="20px 20px" border-radius="8px">
+    <mj-column>
+        <mj-text css-class="callout-large"><strong>Order Code</strong></mj-text>
+        <mj-text css-class="callout-small" color="#d4703e" font-weight="600">{{ order.code }}</mj-text>
+    </mj-column>
+    <mj-column>
+        <mj-text css-class="callout-large"><strong>Order Date</strong></mj-text>
+        <mj-text css-class="callout-small">{{ formatDate order.orderPlacedAt }}</mj-text>
+    </mj-column>
+    <mj-column>
+        <mj-text css-class="callout-large"><strong>Total</strong></mj-text>
+        <mj-text css-class="callout-small">{{ formatMoney order.total order.currencyCode 'en' }}</mj-text>
+    </mj-column>
+</mj-section>
+
+<!-- Shipping Address -->
+<mj-section background-color="#0c0c0e" padding="24px 40px">
+    <mj-column>
+        <mj-text color="#d4703e" font-size="13px" font-weight="600" text-transform="uppercase" letter-spacing="0.5px" padding-bottom="4px">
+            Shipping To
+        </mj-text>
+        <mj-text color="#d4d4d8" font-size="15px">
+            {{#with order.shippingAddress }}
+                <strong style="color: #f4f4f5;">{{ fullName }}</strong>
+                <ul class="address">
+                    {{#if company}}<li>{{ company }}</li>{{/if}}
+                    {{#if streetLine1}}<li>{{ streetLine1 }}</li>{{/if}}
+                    {{#if streetLine2}}<li>{{ streetLine2 }}</li>{{/if}}
+                    {{#if city}}<li>{{ city }}{{#if province}}, {{ province }}{{/if}} {{#if postalCode}}{{ postalCode }}{{/if}}</li>{{/if}}
+                    {{#if country}}<li>{{ country }}</li>{{/if}}
+                    {{#if phoneNumber}}<li>{{ phoneNumber }}</li>{{/if}}
+                </ul>
+            {{/with}}
+        </mj-text>
+    </mj-column>
+</mj-section>
+
+<!-- Divider -->
+<mj-section background-color="#0c0c0e" padding="0 40px">
+    <mj-column>
+        <mj-divider border-color="#27272a" border-width="1px" />
+    </mj-column>
+</mj-section>
+
+<!-- Order Items -->
+<mj-section background-color="#0c0c0e" padding="16px 40px">
+    <mj-column>
+        <mj-text color="#d4703e" font-size="13px" font-weight="600" text-transform="uppercase" letter-spacing="0.5px" padding-bottom="8px">
+            Order Summary
+        </mj-text>
+        <mj-table cellpadding="6px" color="#d4d4d8">
+            {{#each order.lines }}
+                <tr class="order-row">
+                    <td style="width: 56px;">
+                        <img alt="{{ productVariant.name }}"
+                             style="width: 50px; height: 50px; border-radius: 6px; object-fit: cover;"
+                             src="{{ featuredAsset.preview }}?w=50&h=50" />
+                    </td>
+                    <td style="padding-left: 10px;">{{ quantity }} x {{ productVariant.name }}</td>
+                    <td style="text-align: right; white-space: nowrap;">{{ formatMoney discountedLinePriceWithTax ../order.currencyCode 'en' }}</td>
+                </tr>
+            {{/each}}
+            {{#each order.discounts }}
+                <tr class="order-row">
+                    <td colspan="2">{{ description }}</td>
+                    <td style="text-align: right;">{{ formatMoney amount ../order.currencyCode 'en' }}</td>
+                </tr>
+            {{/each}}
+            <tr class="order-row">
+                <td colspan="2">Sub-total</td>
+                <td style="text-align: right;">{{ formatMoney order.subTotalWithTax order.currencyCode 'en' }}</td>
+            </tr>
+            {{#each shippingLines }}
+            <tr class="order-row">
+                <td colspan="2">Shipping ({{ shippingMethod.name }})</td>
+                <td style="text-align: right;">{{ formatMoney priceWithTax ../order.currencyCode 'en' }}</td>
+            </tr>
+            {{/each}}
+            <tr class="order-row total-row">
+                <td colspan="2" style="color: #f4f4f5;">Total</td>
+                <td style="text-align: right; color: #d4703e;">{{ formatMoney order.totalWithTax order.currencyCode 'en' }}</td>
+            </tr>
+        </mj-table>
+    </mj-column>
+</mj-section>
+
+<!-- Upload Photos (conditional) -->
+{{#each order.lines }}
+    {{#if (contains customFields.specialInstructions "[Photos pending]")}}
+<mj-section background-color="#1a1a1e" padding="24px 40px" border-radius="8px">
+    <mj-column>
+        <mj-text color="#d4703e" font-size="16px" font-weight="600" font-family="'Outfit', 'Helvetica Neue', Arial, sans-serif" padding-bottom="8px">
+            📸 Upload Your Pet Photos
+        </mj-text>
+        <mj-text color="#a1a1aa" font-size="14px" line-height="1.7" padding-bottom="16px">
+            We need photos of your pet to begin creating your custom replica. Please upload clear, well-lit photos from multiple angles.
+        </mj-text>
+        <mj-button
+            background-color="#d4703e"
+            color="#ffffff"
+            font-size="14px"
+            font-weight="600"
+            border-radius="8px"
+            padding="12px 32px"
+            href="http://localhost:3020/upload-photos/{{ ../order.code }}"
+        >
+            Upload Photos Now →
+        </mj-button>
+    </mj-column>
+</mj-section>
+    {{/if}}
+{{/each}}
+
+<!-- What's Next -->
+<mj-section background-color="#1a1a1e" padding="24px 40px" border-radius="8px">
+    <mj-column>
+        <mj-text color="#f4f4f5" font-size="16px" font-weight="600" font-family="'Outfit', 'Helvetica Neue', Arial, sans-serif" padding-bottom="8px">
+            What happens next?
+        </mj-text>
+        <mj-text color="#a1a1aa" font-size="14px" line-height="1.7">
+            Our artists will begin crafting your custom pet replica. We'll send you updates as your order progresses. Most replicas are completed within 2-4 weeks.
+        </mj-text>
+    </mj-column>
+</mj-section>
+
+{{> footer }}
